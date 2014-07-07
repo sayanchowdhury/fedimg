@@ -102,7 +102,8 @@ class EC2Service(object):
 
             # Add script for deployment
             # Device becomes /dev/xvdb on instance due to recent kernel change
-            script = "curl {0} | sudo xzcat > /dev/xvdb".format(raw_url)
+            #script = "curl {0} | sudo xzcat > /dev/xvdb".format(raw_url)
+            script = "touch test"
             step_2 = ScriptDeployment(script)
 
             # Create deployment object
@@ -124,6 +125,8 @@ class EC2Service(object):
                                       ex_security_groups=['ssh'],
                                       ex_ebs_optimized=True,
                                       ex_blockdevicemappings=mappings)
+
+            """
 
             # Temporary hack to let the deploy script run
             from time import sleep
@@ -220,6 +223,8 @@ class EC2Service(object):
             print "Terminating instance."
             driver.destroy_node(e.node)
 
+            """
+
         except Exception:
             fedimg.messenger.message(build_name, destination,
                                      'failed')
@@ -234,6 +239,7 @@ class EC2Service(object):
                 driver.destroy_volume_snapshot(snapshot)
             if test_node:
                 driver.destroy_node(test_node)
+                """
 
         # Emit success fedmsg
         fedimg.messenger.message(build_name, destination,
