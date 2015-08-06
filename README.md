@@ -1,55 +1,43 @@
-# fedimg
+# Fedimg
 
 Service to automatically upload built Fedora images to internal and external
 cloud providers.
 
 ## License
 
-AGPLv3+
+Fedimg is licensed under AGPLv3 or newer. See the `LICENSE` file for more
+information.
 
-## Requirements
+## Documentation
 
-Besides the requirements listed in `setup.py` by `install_requires` is the
-`koji` module.  Koji is not available on PyPI. You must install the `koji`
-package to your system via `sudo yum install koji` before creating a
-virtualenv for fedimg, which you should do with `mkvirtualenv [name]
---system-site-packages` so that your system install of `koji` is included with
-your virtualenv.
+Official Fedimg documentation can be [found at
+RTFD](https://fedimg.readthedocs.org) or in `docs/`.
 
-You must also have the `qemu-img` tool installed, or qcow2 --> raw image
-conversion will fail.
+## Triggering jobs
 
-## Installation
+Fedimg is designed to perform automatically when it sees the appropriate
+fedmsg. However, sometimes, it's useful to be able to quickly trigger
+a job manually. If Fedimg is installed properly, the `bin/trigger_upload.py`
+script can be used for this purpose:
 
-Besides installing fedimg or before running `python setup.py
-{develop/install}`, you must copy `fedmsg.d/fedimg.py` to
-`/etc/fedmsg.d/fedimg.py` in order for the consumer to properly listen in on
-the fedmsg bus as `fedmsg-hub` (currently installed separately) runs.
+```
+./bin/trigger_upload.py SOME_RAWXZ_URL
+```
+
+This script simply skips the part where Fedimg listens for the fedmsg, and
+allows you to directly provide a URL to a raw.xz image file that you'd like
+uploaded. Otherwise, Fedimg performs the same as during automatic operation.
 
 ## Providers
 
 We hope to simultaneously upload our cloud images to a variety of internal and
-external spaces.
-
-### Current
-
-* Local file downloads (to be sent, for example, to an NFS share to make the
-  image files available on Fedora's internal FTP server)
-
-### Future
-
-* Amazon EC2
-
-* GCE
-
-* HP
-
-* Rackspace
-
-* Official Fedora and Red Hat cloud spaces
+external spaces. Currently, the code supports Amazon EC2. Work has begun
+toward supporting Rackspace, GCE, and HP. We're currently waiting on some
+legal developments to determine what sort of account and access we'll have
+to these providers.
 
 ## Contributors
 
-* David Gay [oddshocks@riseup.net]
+* David Gay <dgay@redhat.com>
 
-* Ralph Bean [rbean@redhat.com]
+* Ralph Bean <rbean@redhat.com>

@@ -19,15 +19,20 @@
 # Authors:  David Gay <dgay@redhat.com>
 #
 
-"""
-This file might contain some code later, but since this service will likely
-be running on a machine that can write files to the NFS share behind our FTP
-server, the local download code in downloader.py is sufficient, at least for
-now.
-"""
+import mock
+import unittest
+
+import fedimg.uploader
 
 
-def upload(image):
-    """ Takes an image location provided by Koji and uploads it
-        to the internal Fedora FTP server."""
-    pass
+class TestUploader(unittest.TestCase):
+    """ This tests fedimg/uploader.py. """
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+if __name__ == '__main__':
+    unittest.main()
