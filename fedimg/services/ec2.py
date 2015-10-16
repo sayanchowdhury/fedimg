@@ -1,5 +1,5 @@
 # This file is part of fedimg.
-# Copyright (C) 2014 Red Hat, Inc.
+# Copyright (C) 2014-2015 Red Hat, Inc.
 #
 # fedimg is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -17,6 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 # Authors:  David Gay <dgay@redhat.com>
+#           Ralph Bean <rbean@redhat.com>
 #
 
 import logging
@@ -35,7 +36,7 @@ from libcloud.compute.types import KeyPairDoesNotExistError
 import fedimg
 import fedimg.messenger
 from fedimg.util import get_file_arch
-from fedimg.util import region_to_provider, ssh_connection_works
+from fedimg.util import region_to_driver, ssh_connection_works
 
 
 class EC2ServiceException(Exception):
@@ -94,7 +95,7 @@ class EC2Service(object):
             attrs = line.strip().split('|')
 
             info = {'region': attrs[0],
-                    'prov': region_to_provider(attrs[0]),
+                    'driver': region_to_driver(attrs[0]),
                     'os': attrs[1],
                     'ver': attrs[2],
                     'arch': attrs[3],
@@ -163,7 +164,7 @@ class EC2Service(object):
 
         try:
             # Connect to the region through the appropriate libcloud driver
-            cls = get_driver(ami['prov'])
+            cls = ami['driver']
             driver = cls(fedimg.AWS_ACCESS_ID, fedimg.AWS_SECRET_KEY)
 
             # select the desired node attributes
@@ -433,18 +434,34 @@ class EC2Service(object):
             # Select the appropriate size for the instance
             size = [s for s in sizes if s.id == test_size_id][0]
 
+            # Alert the fedmsg bus that an image test is starting
+            fedimg.messenger.message('image.test', self.build_name,
+                                     self.destination, 'started',
+                                     extra={'id': self.images[0].id,
+                                            'virt_type': self.virt_type,
+                                            'vol_type': self.vol_type})
+
             # Actually deploy the test instance
-            self.test_node = driver.deploy_node(
-                name=name, image=self.images[0], size=size,
-                ssh_username=fedimg.AWS_TEST_USER,
-                ssh_alternate_usernames=['root'],
-                ssh_key=fedimg.AWS_KEYPATH,
-                deploy=msd,
-                kernel_id=registration_aki,
-                ex_metadata={'build': self.build_name},
-                ex_keyname=fedimg.AWS_KEYNAME,
-                ex_security_groups=['ssh'],
-                )
+            try:
+                self.test_node = driver.deploy_node(
+                    name=name, image=self.images[0], size=size,
+                    ssh_username=fedimg.AWS_TEST_USER,
+                    ssh_alternate_usernames=['root'],
+                    ssh_key=fedimg.AWS_KEYPATH,
+                    deploy=msd,
+                    kernel_id=registration_aki,
+                    ex_metadata={'build': self.build_name},
+                    ex_keyname=fedimg.AWS_KEYNAME,
+                    ex_security_groups=['ssh'],
+                    )
+            except Exception as e:
+                fedimg.messenger.message('image.test', self.build_name,
+                                         self.destination, 'failed',
+                                         extra={'id': self.images[0].id,
+                                                'virt_type': self.virt_type,
+                                                'vol_type': self.vol_type})
+
+                raise EC2AMITestException("Failed to boot test node %r." % e)
 
             # Wait until the test node has SSH running
             while not ssh_connection_works(fedimg.AWS_TEST_USER,
@@ -453,13 +470,6 @@ class EC2Service(object):
                 sleep(10)
 
             log.info('Starting AMI tests')
-
-            # Alert the fedmsg bus that an image test has started
-            fedimg.messenger.message('image.test', self.build_name,
-                                     self.destination, 'started',
-                                     extra={'id': self.images[0].id,
-                                            'virt_type': self.virt_type,
-                                            'vol_type': self.vol_type})
 
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -569,7 +579,7 @@ class EC2Service(object):
 
                 # Connect to the libcloud EC2 driver for the region we
                 # want to copy into
-                alt_cls = get_driver(ami['prov'])
+                alt_cls = ami['driver']
                 alt_driver = alt_cls(fedimg.AWS_ACCESS_ID,
                                      fedimg.AWS_SECRET_KEY)
 
@@ -639,7 +649,7 @@ class EC2Service(object):
 
             for image in copied_images:
                 ami = self.test_amis[copied_images.index(image)]
-                alt_cls = get_driver(ami['prov'])
+                alt_cls = ami['driver']
                 alt_driver = alt_cls(fedimg.AWS_ACCESS_ID,
                                      fedimg.AWS_SECRET_KEY)
 
