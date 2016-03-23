@@ -32,6 +32,7 @@ from libcloud.compute.deployment import ScriptDeployment, SSHKeyDeployment
 from libcloud.compute.providers import get_driver
 from libcloud.compute.types import DeploymentException
 from libcloud.compute.types import KeyPairDoesNotExistError
+from retrying import retry
 
 import fedimg
 import fedimg.messenger
@@ -66,8 +67,8 @@ class EC2Service(object):
         self.raw_url = raw_url
         self.virt_type = virt_type
         self.vol_type = vol_type
-        # All of these are set to appropriate values throughout
-        # the upload process.
+
+        # All of these are set to appropriate values throughout the upload process.
         self.util_node = None
         self.util_volume = None
         self.images = []
@@ -97,7 +98,7 @@ class EC2Service(object):
             attrs = line.strip().split('|')
 
             # old configuration
-            if len(attrs)==6:     
+            if len(attrs)==6:
 
                 info = {'region': attrs[0],
                         'driver': region_to_driver(attrs[0]),
@@ -106,10 +107,10 @@ class EC2Service(object):
                         'arch': attrs[3],
                         'ami': attrs[4],
                         'aki': attrs[5]}
-            
+
             # new configuration
             elif len(attrs)==4:
-                
+
                 info = {'region': attrs[0],
                         'driver': region_to_driver(attrs[0]),
                         'arch': attrs[1],
@@ -177,8 +178,10 @@ class EC2Service(object):
 
         self.destination = 'EC2 ({region})'.format(region=ami['region'])
 
-        fedimg.messenger.message('image.upload', self.build_name,
-                                 self.destination, 'started')
+        fedimg.messenger.message('image.upload',
+                                 self.build_name,
+                                 self.destination,
+                                 'started')
 
         try:
             # Connect to the region through the appropriate libcloud driver
