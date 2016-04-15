@@ -621,7 +621,7 @@ class EC2Service(object):
 
         return out, err
 
-    def match_regex_pattern(regex, output):
+    def match_regex_pattern(self, regex, output):
         """
         Returns the taskid from the output
         :param regex: regex pattern
@@ -653,7 +653,7 @@ class EC2Service(object):
             'region': region
         }
         cmd = 'euca-describe-conversion-tasks {task_id}\
-               --region {region}'.format(**parmams)
+               --region {region}'.format(**params)
 
         out, err = run_system_command(cmd)
 
