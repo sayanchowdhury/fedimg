@@ -212,6 +212,8 @@ class EC2Service(object):
 
             volume_id = self._describe_conversion_tasks(task_id, region)
 
+            create_snapshot(volume_id)
+
             log.info('Snapshot taken')
 
             # Delete the volume now that we've got the snapshot
