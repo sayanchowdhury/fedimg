@@ -212,7 +212,7 @@ class EC2Service(object):
 
             volume_id = self._describe_conversion_tasks(task_id, region)
 
-            create_snapshot(volume_id)
+            self.create_snapshot(volume_id)
 
             log.info('Snapshot taken')
 
@@ -681,7 +681,7 @@ class EC2Service(object):
                             if v.id == volume_id][0]
 
         self.snapshot = self.driver.create_volume_snapshot(self.util_volume,
-                                                           name=snap_name)
+                                                           name=SNAPSHOT_NAME)
 
         return self._check_snapshot_exists(str(self.snapshot.id))
 
