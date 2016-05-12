@@ -252,9 +252,7 @@ class EC2Service(object):
             }]
 
             log.info('Start image registration')
-            self.register_image(image_name,
-                                reg_root_device_name,
-                                mapping,
+            self.register_image(image_name, reg_root_device_name, mapping,
                                 registration_aki)
             log.info('Completed image registration')
 
@@ -305,7 +303,7 @@ class EC2Service(object):
                     ex_metadata={'build': self.build_name},
                     ex_keyname=fedimg.AWS_KEYNAME,
                     ex_security_groups=['ssh'],
-                    )
+                )
             except Exception as e:
                 fedimg.messenger.message('image.test', self.build_name,
                                          self.destination, 'failed',
@@ -537,7 +535,6 @@ class EC2Service(object):
                                                 'vol_type': self.vol_type})
 
             return 0
-
 
     def create_snapshot(self, volume_id):
         """
