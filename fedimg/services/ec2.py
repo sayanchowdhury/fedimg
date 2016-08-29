@@ -94,13 +94,27 @@ class EC2Service(object):
             # strip line to avoid any newlines or spaces from sneaking in
             attrs = line.strip().split('|')
 
-            info = {'region': attrs[0],
-                    'driver': region_to_driver(attrs[0]),
-                    'os': attrs[1],
-                    'ver': attrs[2],
-                    'arch': attrs[3],
-                    'ami': attrs[4],
-                    'aki': attrs[5]}
+            # old configuration
+            if len(attrs)==6:
+
+                info = {'region': attrs[0],
+                        'driver': region_to_driver(attrs[0]),
+                        'os': attrs[1],
+                        'ver': attrs[2],
+                        'arch': attrs[3],
+                        'ami': attrs[4],
+                        'aki': attrs[5]}
+
+            # new configuration
+            elif len(attrs)==4:
+
+                info = {'region': attrs[0],
+                        'driver': region_to_driver(attrs[0]),
+                        'arch': attrs[1],
+                        'ami': attrs[2],
+                        'aki': attrs[3]}
+
+
 
             # For now, read in all AMIs to these lists, and narrow
             # down later. TODO: This could be made a bit nicer...
@@ -150,7 +164,7 @@ class EC2Service(object):
             driver.destroy_node(self.test_node)
             self.test_node = None
 
-    def upload(self):
+    def upload(self, compose_meta):
         """ Registers the image in each EC2 region. """
 
         log.info('EC2 upload process started')
@@ -159,8 +173,9 @@ class EC2Service(object):
         ami = self.util_amis[0]  # Select the starting AMI to begin
         self.destination = 'EC2 ({region})'.format(region=ami['region'])
 
-        fedimg.messenger.message('image.upload', self.build_name,
-                                 self.destination, 'started')
+        fedimg.messenger.message('image.upload', self.raw_url,
+                                 self.destination, 'started',
+                                 compose=compose_meta)
 
         try:
             # Connect to the region through the appropriate libcloud driver
@@ -287,9 +302,10 @@ class EC2Service(object):
                 if chan.recv_ready():
                     data = chan.recv(1024 * 32)
 
-                fedimg.messenger.message('image.upload', self.build_name,
+                fedimg.messenger.message('image.upload', self.raw_url,
                                          self.destination, 'failed',
-                                         extra={'data': data})
+                                         extra={'data': data},
+                                         compose=compose_meta)
 
                 raise EC2UtilityException(
                     "Problem writing image to utility instance volume. "
@@ -410,11 +426,12 @@ class EC2Service(object):
             # TODO: Can probably move this into the above try/except,
             # to avoid just dumping all the messages at once.
             for image in self.images:
-                fedimg.messenger.message('image.upload', self.build_name,
+                fedimg.messenger.message('image.upload', self.raw_url,
                                          self.destination, 'completed',
                                          extra={'id': image.id,
                                                 'virt_type': self.virt_type,
-                                                'vol_type': self.vol_type})
+                                                'vol_type': self.vol_type},
+                                         compose=compose_meta)
 
             # Now, we'll spin up a node of the AMI to test:
 
@@ -435,11 +452,12 @@ class EC2Service(object):
             size = [s for s in sizes if s.id == test_size_id][0]
 
             # Alert the fedmsg bus that an image test is starting
-            fedimg.messenger.message('image.test', self.build_name,
+            fedimg.messenger.message('image.test', self.raw_url,
                                      self.destination, 'started',
                                      extra={'id': self.images[0].id,
                                             'virt_type': self.virt_type,
-                                            'vol_type': self.vol_type})
+                                            'vol_type': self.vol_type},
+                                     compose=compose_meta)
 
             # Actually deploy the test instance
             try:
@@ -455,11 +473,12 @@ class EC2Service(object):
                     ex_security_groups=['ssh'],
                     )
             except Exception as e:
-                fedimg.messenger.message('image.test', self.build_name,
+                fedimg.messenger.message('image.test', self.raw_url,
                                          self.destination, 'failed',
                                          extra={'id': self.images[0].id,
                                                 'virt_type': self.virt_type,
-                                                'vol_type': self.vol_type})
+                                                'vol_type': self.vol_type},
+                                         compose=compose_meta)
 
                 raise EC2AMITestException("Failed to boot test node %r." % e)
 
@@ -496,12 +515,13 @@ class EC2Service(object):
                 if chan.recv_ready():
                     data = chan.recv(1024 * 32)
 
-                fedimg.messenger.message('image.test', self.build_name,
+                fedimg.messenger.message('image.test', self.raw_url,
                                          self.destination, 'failed',
                                          extra={'id': self.images[0].id,
                                                 'virt_type': self.virt_type,
                                                 'vol_type': self.vol_type,
-                                                'data': data})
+                                                'data': data},
+                                         compose=compose_meta)
 
                 raise EC2AMITestException("Tests on AMI failed.\n"
                                           "output: %s" % data)
@@ -509,11 +529,12 @@ class EC2Service(object):
             client.close()
 
             log.info('AMI test completed')
-            fedimg.messenger.message('image.test', self.build_name,
+            fedimg.messenger.message('image.test', self.raw_url,
                                      self.destination, 'completed',
                                      extra={'id': self.images[0].id,
                                             'virt_type': self.virt_type,
-                                            'vol_type': self.vol_type})
+                                            'vol_type': self.vol_type},
+                                     compose=compose_meta)
 
             # Let this EC2Service know that the AMI test passed, so
             # it knows how to proceed.
@@ -574,8 +595,9 @@ class EC2Service(object):
                     region=ami['region'])
 
                 fedimg.messenger.message('image.upload',
-                                         self.build_name,
-                                         alt_dest, 'started')
+                                         self.raw_url,
+                                         alt_dest, 'started',
+                                         compose=compose_meta)
 
                 # Connect to the libcloud EC2 driver for the region we
                 # want to copy into
@@ -636,8 +658,9 @@ class EC2Service(object):
                                 'Image copy to {0} failed'.format(
                                     ami['region']))
                             fedimg.messenger.message('image.upload',
-                                                     self.build_name,
-                                                     alt_dest, 'failed')
+                                                     self.raw_url,
+                                                     alt_dest, 'failed',
+                                                     compose=compose_meta)
                     break
 
             # Now cycle through and make all of the copied AMIs public
@@ -678,10 +701,11 @@ class EC2Service(object):
                                                                   self.vol_type))
 
                 fedimg.messenger.message('image.upload',
-                                         self.build_name,
+                                         self.raw_url,
                                          alt_dest, 'completed',
                                          extra={'id': image.id,
                                                 'virt_type': self.virt_type,
-                                                'vol_type': self.vol_type})
+                                                'vol_type': self.vol_type},
+                                         compose=compose_meta)
 
             return 0

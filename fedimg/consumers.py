@@ -26,92 +26,63 @@ import multiprocessing.pool
 
 import fedmsg.consumers
 import fedmsg.encoding
-import koji
+import fedfind.release
 
 import fedimg.uploader
-from fedimg.util import get_rawxz_url
+from fedimg.util import get_rawxz_urls, safeget
 
 
-class KojiConsumer(fedmsg.consumers.FedmsgConsumer):
+class FedimgConsumer(fedmsg.consumers.FedmsgConsumer):
     """ Listens for image Koji task completion and sends image files
         produced by the child createImage tasks to the uploader. """
-    # To my knowledge, all *image* builds appear under this
-    # exact topic, along with scratch builds.
-    topic = 'org.fedoraproject.prod.buildsys.task.state.change'
-    config_key = 'kojiconsumer'
+
+    # It used to be that all *image* builds appeared as scratch builds on the
+    # task.state.change topic.  However, with the switch to pungi4, some of
+    # them (and all of them in the future) appear as full builds under the
+    # build.state.change topic.  That means we have to handle both cases like
+    # this, at least for now.
+    topic = [
+        'org.fedoraproject.prod.pungi.compose.status.change',
+    ]
+
+    config_key = 'fedimgconsumer'
 
     def __init__(self, *args, **kwargs):
-        super(KojiConsumer, self).__init__(*args, **kwargs)
+        super(FedimgConsumer, self).__init__(*args, **kwargs)
 
         # threadpool for upload jobs
         self.upload_pool = multiprocessing.pool.ThreadPool(processes=4)
 
         log.info("Super happy fedimg ready and reporting for duty.")
 
-    def _get_upload_urls(self, builds):
-        """ Takes a list of koji createImage task IDs and returns a list of
-        URLs to .raw.xz image files that should be uploaded. """
-
-        for build in builds:
-            log.info('Got Koji build {0}'.format(build))
-
-        # Create a Koji connection to the Fedora Koji instance
-        koji_session = koji.ClientSession(fedimg.KOJI_SERVER)
-
-        rawxz_files = []  # list of full URLs of files
-
-        # Get all of the .raw.xz URLs for the builds
-        if len(builds) == 1:
-            task_result = koji_session.getTaskResult(builds[0])
-            url = get_rawxz_url(task_result)
-            if url:
-                rawxz_files.append(url)
-        elif len(builds) >= 2:
-            koji_session.multicall = True
-            for build in builds:
-                koji_session.getTaskResult(build)
-            results = koji_session.multiCall()
-            for result in results:
-                if not result: continue
-                url = get_rawxz_url(result[0])
-                if url:
-                    rawxz_files.append(url)
-
-        # We only want to upload:
-        # 64 bit: base, atomic, bigdata
-        # Not uploading 32 bit, vagrant, experimental, or other images.
-        upload_files = []  # files that will actually be uploaded
-        for url in rawxz_files:
-            u = url.lower()
-            if u.find('x86_64') > -1 and u.find('vagrant') == -1:
-                if (u.find('fedora-cloud-base') > -1
-                        or u.find('fedora-cloud-atomic') > -1
-                        or u.find('fedora-cloud-bigdata') > -1):
-                    upload_files.append(url)
-                    log.info('Image {0} will be uploaded'.format(url))
-
-        return upload_files
-
     def consume(self, msg):
-        """ This is called when we receive a message matching the topic. """
-
-        builds = list()  # These will be the Koji build IDs to upload, if any.
-
-        msg_info = msg["body"]["msg"]["info"]
+        """ This is called when we receive a message matching our topics. """
 
         log.info('Received %r %r' % (msg['topic'], msg['body']['msg_id']))
 
-        # If the build method is "image", we check to see if the child
-        # task's method is "createImage".
-        if msg_info["method"] == "image":
-            if isinstance(msg_info["children"], list):
-                for child in msg_info["children"]:
-                    if child["method"] == "createImage":
-                        # We only care about the image if the build
-                        # completed successfully (with state code 2).
-                        if child["state"] == 2:
-                            builds.append(child["id"])
+        STATUS_F = ('FINISHED_INCOMPLETE', 'FINISHED',)
 
-        if len(builds) > 0:
+        msg_info = msg['body']['msg']
+        if msg_info['status'] not in STATUS_F:
+            return
+
+        location = msg_info['location']
+        compose_id = msg_info['compose_id']
+        cmetadata = fedfind.release.get_release_cid(compose_id).metadata
+
+        images_meta = safeget(cmetadata, 'images', 'payload', 'images',
+                              'CloudImages', 'x86_64')
+
+        if images_meta is None:
+            return
+
+        self.upload_urls = get_rawxz_urls(location, images_meta)
+        compose_meta = {
+            'compose_id': compose_id,
+        }
+
+        if len(self.upload_urls) > 0:
+            log.info("Processing compose id: %s" % compose_id)
             fedimg.uploader.upload(self.upload_pool,
-                                   self._get_upload_urls(builds))
+                                   self.upload_urls,
+                                   compose_meta)

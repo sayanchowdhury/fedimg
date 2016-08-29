@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fedimg',
-    version='0.6.4',
+    version='0.7',
     description='Automatically upload Fedora Cloud images to cloud providers',
     classifiers=[
         "Programming Language :: Python :: 2.7",
@@ -45,6 +45,6 @@ setup(
     packages=find_packages(),
     entry_points="""
     [moksha.consumer]
-    kojiconsumer = fedimg.consumers:KojiConsumer
+    fedimgconsumer = fedimg.consumers:FedimgConsumer
     """,
 )
