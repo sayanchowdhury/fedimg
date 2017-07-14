@@ -420,7 +420,8 @@ class EC2Service(object):
                         block_device_mapping=mapping,
                         virtualization_type=self.virt_type,
                         kernel_id=registration_aki,
-                        architecture=self.image_arch))
+                        architecture=self.image_arch,
+                        ena_support=True))
                 except Exception as e:
                     # Check if the problem was a duplicate name
                     if 'InvalidAMIName.Duplicate' in str(e):
