@@ -21,13 +21,13 @@
 #
 import logging
 import re
-from time import sleep
 
 import fedimg.messenger
-from fedimg.config import AWS_DELETE_RESOURCES, AWS_S3_BUCKET_NAME
-from fedimg.services.ec2.ec2base import EC2Base
 from fedimg.utils import external_run_command, get_item_from_regex
 from fedimg.utils import get_image_name_from_ami_name_for_fedmsg
+from fedimg.utils import retry
+from fedimg.config import AWS_DELETE_RESOURCES, AWS_S3_BUCKET_NAME
+from fedimg.services.ec2.ec2base import EC2Base
 
 _log = logging.getLogger(__name__)
 
@@ -107,27 +107,27 @@ class EC2ImageUploader(EC2Base):
 
         return [block_device_map]
 
+    @retry(timeout=14400, delay=10)
     def _retry_and_get_volume_id(self, task_id):
-        while True:
-            output, err, retcode = external_run_command([
-                'euca-describe-conversion-tasks',
-                task_id,
-                '--region',
-                self.region
-            ])
+        output, err, retcode = external_run_command([
+            'euca-describe-conversion-tasks',
+            task_id,
+            '--region',
+            self.region
+        ])
 
-            if 'completed' in output:
-                _log.debug('Task %r complete. Fetching volume id...' % task_id)
-                match = re.search('\s(vol-\w{17})', output)
-                volume_id = match.group(1)
+        if 'completed' in output:
+            _log.debug('Task %r complete. Fetching volume id...' % task_id)
+            match = re.search('\s(vol-\w{17})', output)
+            volume_id = match.group(1)
 
-                _log.debug('The id of the created volume: %r' % volume_id)
+            _log.debug('The id of the created volume: %r' % volume_id)
 
-                return volume_id
+            return True, volume_id
 
-            _log.debug('Failed to find complete. Task %r still running. '
-                       'Sleeping for 10 seconds.' % task_id)
-            sleep(10)
+        _log.debug('Failed to find complete. Task %r still running. '
+                   'Sleeping for 10 seconds.' % task_id)
+        return False, ''
 
     def _create_snapshot(self, volume):
         snapshot = self._connect().create_volume_snapshot(

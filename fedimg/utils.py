@@ -32,6 +32,8 @@ import re
 import socket
 import subprocess
 import tempfile
+from datetime import datetime
+from time import sleep
 
 from libcloud.compute.providers import get_driver
 from libcloud.compute.types import Provider
@@ -39,7 +41,7 @@ from libcloud.compute.types import Provider
 import paramiko
 
 from fedimg.exceptions import CommandRunFailed, SourceNotFound
-from fedimg.exceptions import UnCompressFailed
+from fedimg.exceptions import RetryTimeout, UnCompressFailed
 
 _log = logging.getLogger(__name__)
 
@@ -205,3 +207,22 @@ def get_image_name_from_ami_name_for_fedmsg(image_name):
     image_name = name_vt_region.rsplit('-', 4)[:-4][0]
 
     return image_name
+
+
+def retry(timeout, delay):
+    def decorator(function):
+        start_time = datetime.now()
+
+        def wrapper(*args, **kwargs):
+            while ((datetime.now() - start_time).seconds < timeout):
+                _bool, value = function(*args, **kwargs)
+                sleep(delay)
+
+                if _bool:
+                    break
+            else:
+                raise RetryTimeout
+
+            return value
+        return wrapper
+    return decorator
