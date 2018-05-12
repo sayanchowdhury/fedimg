@@ -158,6 +158,8 @@ def main(image_urls, access_id, secret_key, regions, volume_types=None,
                         )
                     )
                 image = uploader.create_image(source)
+                if image is None:
+                    continue
 
                 published_images.extend(publisher.publish_images(
                     region_image_mapping=[(region, image.id)]
@@ -179,4 +181,5 @@ def main(image_urls, access_id, secret_key, regions, volume_types=None,
                 shutil.rmtree(xz_file_dirname)
                 _log.info("Cleaned up %r" % xz_file_dirname)
 
+    _log.info("Published Images: %s" % published_images)
     return published_images

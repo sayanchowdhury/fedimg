@@ -23,6 +23,7 @@ import logging
 import re
 
 import fedimg.messenger
+from fedimg.exceptions import RetryTimeout
 from fedimg.utils import external_run_command, get_item_from_regex
 from fedimg.utils import get_image_name_from_ami_name_for_fedmsg
 from fedimg.utils import retry
@@ -182,7 +183,12 @@ class EC2ImageUploader(EC2Base):
             task_id = get_item_from_regex(output, regex='\s(import-vol-\w{8})')
             _log.info('Fetched task_id: %r. Listening to the task.' % task_id)
 
-            volume_id = self._retry_and_get_volume_id(task_id)
+            try:
+                volume_id = self._retry_and_get_volume_id(task_id)
+            except RetryTimeout:
+                _log.error("Retry Timeout. Failed to create volume: %s",
+                           task_id)
+                return None
 
             volume = self.get_volume_from_volume_id(volume_id)
             _log.info('Finish fetching volume object using volume_id')
@@ -352,6 +358,8 @@ class EC2ImageUploader(EC2Base):
             snapshot: `VolumeSnapshot` object
         """
         self.volume = self._create_volume(source)
+        if self.volume is None:
+            return None
 
         _log.info('Start creating snapshot from volume: %r' % self.volume.id)
         snapshot = self._create_snapshot(self.volume)
@@ -376,7 +384,7 @@ class EC2ImageUploader(EC2Base):
 
     def create_image(self, source):
         """
-        Create Amazon machin image out of the given source
+        Create Amazone machin image out of the given source
 
         Args:
             source (str): path of the source cloud image file.
@@ -386,6 +394,9 @@ class EC2ImageUploader(EC2Base):
         """
 
         snapshot = self.create_snapshot(source)
+        if snapshot is None:
+            return None
+
         _log.debug('Finished create snapshot: %r' % snapshot.id)
 
         _log.info('Start to register the image from the snapshot: %r',
