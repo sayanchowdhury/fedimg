@@ -19,14 +19,22 @@
 # Authors:  David Gay <dgay@redhat.com>
 #           Sayan Chowdhury <sayanchowdhury@fedoraproject.org>
 
+import os.path
 import toml
 
+config_file = '/etc/fedimg/fedimg-conf.toml'
+if not os.path.isfile(config_file):
+    # Get the path of the configuration file
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    config_file = os.path.join(project_root, 'fedimg-conf.toml.example')
+
 # Read in config file
-with open("/etc/fedimg/fedimg-conf.toml") as conffile:
+config = {}
+with open(config_file) as conffile:
     config = toml.loads(conffile.read())
 
 # Fedimg Consumer configurations
-PROCESS_COUNT = config['general']['process_count']
+PROCESS_COUNT = config.get('general', {}).get('process_count', {})
 STATUS_FILTER = ('FINISHED_INCOMPLETE', 'FINISHED')
 
 ACTIVE_SERVICES = config['general']['active_services']
@@ -42,4 +50,6 @@ AWS_REGIONS = config.get('aws', {}).get('regions', {})
 AWS_ROOT_VOLUME_SIZE = config.get('aws', {}).get('root_volume_size', {})
 AWS_BASE_REGION = config.get('aws', {}).get('base_region', {})
 AWS_DELETE_RESOURCES = config.get('aws', {}).get('delete_resources', True)
-AWS_S3_BUCKET_NAME = config.get('aws', {}).get('bucket_name', 'fedora-s3-bucket-fedimg')
+AWS_S3_BUCKET_NAME = config.get('aws', {}).get('bucket_name',
+                                               'fedora-s3-bucket-fedimg')
+
