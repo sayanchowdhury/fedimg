@@ -3,7 +3,7 @@ interactions:
     body: null
     headers:
       Connection: [close]
-      Host: [!!python/unicode kojipkgs.fedoraproject.org]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
       User-Agent: [Python-urllib/2.7]
     method: GET
     uri: https://kojipkgs.fedoraproject.org/compose/Fedora-Cloud-27-20180317.0/compose
@@ -22,7 +22,7 @@ interactions:
 
         </body></html>
 
-'}
+        '}
     headers:
       appserver: [proxy01.phx2.fedoraproject.org]
       apptime: [D=3251]
@@ -48,17 +48,18 @@ interactions:
     method: GET
     uri: https://kojipkgs.fedoraproject.org/compose/Fedora-Cloud-27-20180317.0/compose/
   response:
-    body: {string: !!python/unicode "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2
-        Final//EN\">\n<html>\n <head>\n  <title>Index of /compose/Fedora-Cloud-27-20180317.0/compose</title>\n
-        </head>\n <body>\n<h1>Index of /compose/Fedora-Cloud-27-20180317.0/compose</h1>\n<pre><img
-        src=\"/icons/blank.gif\" alt=\"Icon \"> <a href=\"?C=N;O=D\">Name</a>                                 <a
-        href=\"?C=M;O=A\">Last modified</a>      <a href=\"?C=S;O=A\">Size</a>  <a
-        href=\"?C=D;O=A\">Description</a><hr><img src=\"/icons/back.gif\" alt=\"[PARENTDIR]\">
-        <a href=\"/compose/Fedora-Cloud-27-20180317.0/\">Parent Directory</a>                                          -
-        \  \n<img src=\"/icons/folder.gif\" alt=\"[DIR]\"> <a href=\"CloudImages/\">CloudImages/</a>
-        \                        2018-03-17 07:24    -   \n<img src=\"/icons/folder.gif\"
-        alt=\"[DIR]\"> <a href=\"metadata/\">metadata/</a>                            2018-03-17
-        07:25    -   \n<hr></pre>\n</body></html>\n"}
+    body: {string: !!python/unicode "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2\
+        \ Final//EN\">\n<html>\n <head>\n  <title>Index of /compose/Fedora-Cloud-27-20180317.0/compose</title>\n\
+        \ </head>\n <body>\n<h1>Index of /compose/Fedora-Cloud-27-20180317.0/compose</h1>\n\
+        <pre><img src=\"/icons/blank.gif\" alt=\"Icon \"> <a href=\"?C=N;O=D\">Name</a>\
+        \                                 <a href=\"?C=M;O=A\">Last modified</a> \
+        \     <a href=\"?C=S;O=A\">Size</a>  <a href=\"?C=D;O=A\">Description</a><hr><img\
+        \ src=\"/icons/back.gif\" alt=\"[PARENTDIR]\"> <a href=\"/compose/Fedora-Cloud-27-20180317.0/\"\
+        >Parent Directory</a>                                          -   \n<img\
+        \ src=\"/icons/folder.gif\" alt=\"[DIR]\"> <a href=\"CloudImages/\">CloudImages/</a>\
+        \                         2018-03-17 07:24    -   \n<img src=\"/icons/folder.gif\"\
+        \ alt=\"[DIR]\"> <a href=\"metadata/\">metadata/</a>                     \
+        \       2018-03-17 07:25    -   \n<hr></pre>\n</body></html>\n"}
     headers:
       appserver: [proxy01.phx2.fedoraproject.org]
       apptime: [D=6338]
@@ -78,14 +79,14 @@ interactions:
     body: null
     headers:
       Connection: [close]
-      Host: [!!python/unicode kojipkgs.fedoraproject.org]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
       User-Agent: [Python-urllib/2.7]
     method: GET
     uri: https://kojipkgs.fedoraproject.org/compose/Fedora-Cloud-27-20180317.0/STATUS
   response:
     body: {string: !!python/unicode 'FINISHED
 
-'}
+        '}
     headers:
       accept-ranges: [bytes]
       appserver: [proxy01.phx2.fedoraproject.org]
@@ -106,24 +107,25 @@ interactions:
     body: null
     headers:
       Connection: [close]
-      Host: [!!python/unicode kojipkgs.fedoraproject.org]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
       User-Agent: [Python-urllib/2.7]
     method: GET
     uri: https://kojipkgs.fedoraproject.org/compose/Fedora-Cloud-27-20180317.0/compose/metadata/composeinfo.json
   response:
-    body: {string: !!python/unicode "{\n    \"header\": {\n        \"type\": \"productmd.composeinfo\",\n
-        \       \"version\": \"1.2\"\n    },\n    \"payload\": {\n        \"compose\":
-        {\n            \"date\": \"20180317\",\n            \"final\": true,\n            \"id\":
-        \"Fedora-Cloud-27-20180317.0\",\n            \"label\": \"RC-20180317.0\",\n
-        \           \"respin\": 0,\n            \"type\": \"production\"\n        },\n
-        \       \"release\": {\n            \"internal\": false,\n            \"name\":
-        \"Fedora-Cloud\",\n            \"short\": \"Fedora-Cloud\",\n            \"type\":
-        \"ga\",\n            \"version\": \"27\"\n        },\n        \"variants\":
-        {\n            \"CloudImages\": {\n                \"arches\": [\n                    \"x86_64\"\n
-        \               ],\n                \"id\": \"CloudImages\",\n                \"name\":
-        \"CloudImages\",\n                \"paths\": {},\n                \"type\":
-        \"variant\",\n                \"uid\": \"CloudImages\"\n            }\n        }\n
-        \   }\n}"}
+    body: {string: !!python/unicode "{\n    \"header\": {\n        \"type\": \"productmd.composeinfo\"\
+        ,\n        \"version\": \"1.2\"\n    },\n    \"payload\": {\n        \"compose\"\
+        : {\n            \"date\": \"20180317\",\n            \"final\": true,\n \
+        \           \"id\": \"Fedora-Cloud-27-20180317.0\",\n            \"label\"\
+        : \"RC-20180317.0\",\n            \"respin\": 0,\n            \"type\": \"\
+        production\"\n        },\n        \"release\": {\n            \"internal\"\
+        : false,\n            \"name\": \"Fedora-Cloud\",\n            \"short\":\
+        \ \"Fedora-Cloud\",\n            \"type\": \"ga\",\n            \"version\"\
+        : \"27\"\n        },\n        \"variants\": {\n            \"CloudImages\"\
+        : {\n                \"arches\": [\n                    \"x86_64\"\n     \
+        \           ],\n                \"id\": \"CloudImages\",\n               \
+        \ \"name\": \"CloudImages\",\n                \"paths\": {},\n           \
+        \     \"type\": \"variant\",\n                \"uid\": \"CloudImages\"\n \
+        \           }\n        }\n    }\n}"}
     headers:
       accept-ranges: [bytes]
       appserver: [proxy01.phx2.fedoraproject.org]
@@ -145,55 +147,62 @@ interactions:
     body: null
     headers:
       Connection: [close]
-      Host: [!!python/unicode kojipkgs.fedoraproject.org]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
       User-Agent: [Python-urllib/2.7]
     method: GET
     uri: https://kojipkgs.fedoraproject.org/compose/Fedora-Cloud-27-20180317.0/compose/metadata/images.json
   response:
-    body: {string: !!python/unicode "{\n    \"header\": {\n        \"type\": \"productmd.images\",\n
-        \       \"version\": \"1.2\"\n    },\n    \"payload\": {\n        \"compose\":
-        {\n            \"date\": \"20180317\",\n            \"id\": \"Fedora-Cloud-27-20180317.0\",\n
-        \           \"respin\": 0,\n            \"type\": \"production\"\n        },\n
-        \       \"images\": {\n            \"CloudImages\": {\n                \"x86_64\":
-        [\n                    {\n                        \"arch\": \"x86_64\",\n
-        \                       \"bootable\": false,\n                        \"checksums\":
-        {\n                            \"sha256\": \"18ab8ec5b6c07f202e4aa76c7053561fd3dd053d357767e6f680e27fcbb68d61\"\n
-        \                       },\n                        \"disc_count\": 1,\n                        \"disc_number\":
-        1,\n                        \"format\": \"qcow2\",\n                        \"implant_md5\":
-        null,\n                        \"mtime\": 1521271437,\n                        \"path\":
-        \"CloudImages/x86_64/images/Fedora-Cloud-Base-27-20180317.0.x86_64.qcow2\",\n
-        \                       \"size\": 229593600,\n                        \"subvariant\":
-        \"Cloud_Base\",\n                        \"type\": \"qcow2\",\n                        \"volume_id\":
-        null\n                    },\n                    {\n                        \"arch\":
-        \"x86_64\",\n                        \"bootable\": false,\n                        \"checksums\":
-        {\n                            \"sha256\": \"f95616f1c5bd6c02df721338af6ee2b7ecf87a80d016746171307a2eed4ccb72\"\n
-        \                       },\n                        \"disc_count\": 1,\n                        \"disc_number\":
-        1,\n                        \"format\": \"raw.xz\",\n                        \"implant_md5\":
-        null,\n                        \"mtime\": 1521271446,\n                        \"path\":
-        \"CloudImages/x86_64/images/Fedora-Cloud-Base-27-20180317.0.x86_64.raw.xz\",\n
-        \                       \"size\": 148620976,\n                        \"subvariant\":
-        \"Cloud_Base\",\n                        \"type\": \"raw-xz\",\n                        \"volume_id\":
-        null\n                    },\n                    {\n                        \"arch\":
-        \"x86_64\",\n                        \"bootable\": false,\n                        \"checksums\":
-        {\n                            \"sha256\": \"7b928590222834b13f4dff7b004e2f9bbc3abb8fb65012a5b44982122da284f4\"\n
-        \                       },\n                        \"disc_count\": 1,\n                        \"disc_number\":
-        1,\n                        \"format\": \"vagrant-libvirt.box\",\n                        \"implant_md5\":
-        null,\n                        \"mtime\": 1521271495,\n                        \"path\":
-        \"CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-27-20180317.0.x86_64.vagrant-libvirt.box\",\n
-        \                       \"size\": 212164129,\n                        \"subvariant\":
-        \"Cloud_Base\",\n                        \"type\": \"vagrant-libvirt\",\n
-        \                       \"volume_id\": null\n                    },\n                    {\n
-        \                       \"arch\": \"x86_64\",\n                        \"bootable\":
-        false,\n                        \"checksums\": {\n                            \"sha256\":
-        \"223b235e5ead751a8d00842e337003cd8d0d268380f8db57be489088c07e2efe\"\n                        },\n
-        \                       \"disc_count\": 1,\n                        \"disc_number\":
-        1,\n                        \"format\": \"vagrant-virtualbox.box\",\n                        \"implant_md5\":
-        null,\n                        \"mtime\": 1521271485,\n                        \"path\":
-        \"CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-27-20180317.0.x86_64.vagrant-virtualbox.box\",\n
-        \                       \"size\": 220467200,\n                        \"subvariant\":
-        \"Cloud_Base\",\n                        \"type\": \"vagrant-virtualbox\",\n
-        \                       \"volume_id\": null\n                    }\n                ]\n
-        \           }\n        }\n    }\n}"}
+    body: {string: !!python/unicode "{\n    \"header\": {\n        \"type\": \"productmd.images\"\
+        ,\n        \"version\": \"1.2\"\n    },\n    \"payload\": {\n        \"compose\"\
+        : {\n            \"date\": \"20180317\",\n            \"id\": \"Fedora-Cloud-27-20180317.0\"\
+        ,\n            \"respin\": 0,\n            \"type\": \"production\"\n    \
+        \    },\n        \"images\": {\n            \"CloudImages\": {\n         \
+        \       \"x86_64\": [\n                    {\n                        \"arch\"\
+        : \"x86_64\",\n                        \"bootable\": false,\n            \
+        \            \"checksums\": {\n                            \"sha256\": \"\
+        18ab8ec5b6c07f202e4aa76c7053561fd3dd053d357767e6f680e27fcbb68d61\"\n     \
+        \                   },\n                        \"disc_count\": 1,\n     \
+        \                   \"disc_number\": 1,\n                        \"format\"\
+        : \"qcow2\",\n                        \"implant_md5\": null,\n           \
+        \             \"mtime\": 1521271437,\n                        \"path\": \"\
+        CloudImages/x86_64/images/Fedora-Cloud-Base-27-20180317.0.x86_64.qcow2\",\n\
+        \                        \"size\": 229593600,\n                        \"\
+        subvariant\": \"Cloud_Base\",\n                        \"type\": \"qcow2\"\
+        ,\n                        \"volume_id\": null\n                    },\n \
+        \                   {\n                        \"arch\": \"x86_64\",\n   \
+        \                     \"bootable\": false,\n                        \"checksums\"\
+        : {\n                            \"sha256\": \"f95616f1c5bd6c02df721338af6ee2b7ecf87a80d016746171307a2eed4ccb72\"\
+        \n                        },\n                        \"disc_count\": 1,\n\
+        \                        \"disc_number\": 1,\n                        \"format\"\
+        : \"raw.xz\",\n                        \"implant_md5\": null,\n          \
+        \              \"mtime\": 1521271446,\n                        \"path\": \"\
+        CloudImages/x86_64/images/Fedora-Cloud-Base-27-20180317.0.x86_64.raw.xz\"\
+        ,\n                        \"size\": 148620976,\n                        \"\
+        subvariant\": \"Cloud_Base\",\n                        \"type\": \"raw-xz\"\
+        ,\n                        \"volume_id\": null\n                    },\n \
+        \                   {\n                        \"arch\": \"x86_64\",\n   \
+        \                     \"bootable\": false,\n                        \"checksums\"\
+        : {\n                            \"sha256\": \"7b928590222834b13f4dff7b004e2f9bbc3abb8fb65012a5b44982122da284f4\"\
+        \n                        },\n                        \"disc_count\": 1,\n\
+        \                        \"disc_number\": 1,\n                        \"format\"\
+        : \"vagrant-libvirt.box\",\n                        \"implant_md5\": null,\n\
+        \                        \"mtime\": 1521271495,\n                        \"\
+        path\": \"CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-27-20180317.0.x86_64.vagrant-libvirt.box\"\
+        ,\n                        \"size\": 212164129,\n                        \"\
+        subvariant\": \"Cloud_Base\",\n                        \"type\": \"vagrant-libvirt\"\
+        ,\n                        \"volume_id\": null\n                    },\n \
+        \                   {\n                        \"arch\": \"x86_64\",\n   \
+        \                     \"bootable\": false,\n                        \"checksums\"\
+        : {\n                            \"sha256\": \"223b235e5ead751a8d00842e337003cd8d0d268380f8db57be489088c07e2efe\"\
+        \n                        },\n                        \"disc_count\": 1,\n\
+        \                        \"disc_number\": 1,\n                        \"format\"\
+        : \"vagrant-virtualbox.box\",\n                        \"implant_md5\": null,\n\
+        \                        \"mtime\": 1521271485,\n                        \"\
+        path\": \"CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-27-20180317.0.x86_64.vagrant-virtualbox.box\"\
+        ,\n                        \"size\": 220467200,\n                        \"\
+        subvariant\": \"Cloud_Base\",\n                        \"type\": \"vagrant-virtualbox\"\
+        ,\n                        \"volume_id\": null\n                    }\n  \
+        \              ]\n            }\n        }\n    }\n}"}
     headers:
       accept-ranges: [bytes]
       appserver: [proxy01.phx2.fedoraproject.org]
@@ -211,4 +220,364 @@ interactions:
       x-frame-options: [SAMEORIGIN]
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
+      User-Agent: [Python-urllib/2.7]
+    method: GET
+    uri: https://kojipkgs.fedoraproject.org/compose/cloud/Fedora-Cloud-27-20180317.0/compose
+  response:
+    body: {string: !!python/unicode '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /compose/cloud/Fedora-Cloud-27-20180317.0/compose was
+        not found on this server.</p>
+
+        </body></html>
+
+        '}
+    headers:
+      appserver: [proxy01.phx2.fedoraproject.org]
+      apptime: [D=19243]
+      connection: [close]
+      content-length: ['246']
+      content-type: [text/html; charset=iso-8859-1]
+      date: ['Tue, 24 Jul 2018 20:48:26 GMT']
+      referrer-policy: [same-origin]
+      server: [Apache/2.4.33 (Fedora)]
+      strict-transport-security: [max-age=31536000; includeSubDomains; preload, max-age=31536000;
+          includeSubDomains; preload]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
+      User-Agent: [Python-urllib/2.7]
+    method: GET
+    uri: https://kojipkgs.fedoraproject.org/compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+  response:
+    body: {string: !!python/unicode '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+        was not found on this server.</p>
+
+        </body></html>
+
+        '}
+    headers:
+      appserver: [proxy01.phx2.fedoraproject.org]
+      apptime: [D=1727]
+      connection: [close]
+      content-length: ['249']
+      content-type: [text/html; charset=iso-8859-1]
+      date: ['Tue, 24 Jul 2018 20:48:33 GMT']
+      referrer-policy: [same-origin]
+      server: [Apache/2.4.33 (Fedora)]
+      strict-transport-security: [max-age=31536000; includeSubDomains; preload, max-age=31536000;
+          includeSubDomains; preload]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
+      User-Agent: [Python-urllib/2.7]
+    method: GET
+    uri: https://kojipkgs.fedoraproject.org/compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+  response:
+    body: {string: !!python/unicode '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+        was not found on this server.</p>
+
+        </body></html>
+
+        '}
+    headers:
+      appserver: [proxy01.phx2.fedoraproject.org]
+      apptime: [D=2128]
+      connection: [close]
+      content-length: ['249']
+      content-type: [text/html; charset=iso-8859-1]
+      date: ['Tue, 24 Jul 2018 20:48:39 GMT']
+      referrer-policy: [same-origin]
+      server: [Apache/2.4.33 (Fedora)]
+      strict-transport-security: [max-age=31536000; includeSubDomains; preload, max-age=31536000;
+          includeSubDomains; preload]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
+      User-Agent: [Python-urllib/2.7]
+    method: GET
+    uri: https://kojipkgs.fedoraproject.org/compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+  response:
+    body: {string: !!python/unicode '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+        was not found on this server.</p>
+
+        </body></html>
+
+        '}
+    headers:
+      appserver: [proxy10.phx2.fedoraproject.org]
+      apptime: [D=2345]
+      connection: [close]
+      content-length: ['249']
+      content-type: [text/html; charset=iso-8859-1]
+      date: ['Tue, 24 Jul 2018 20:48:45 GMT']
+      referrer-policy: [same-origin]
+      server: [Apache/2.4.33 (Fedora)]
+      strict-transport-security: [max-age=31536000; includeSubDomains; preload, max-age=31536000;
+          includeSubDomains; preload]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
+      User-Agent: [Python-urllib/2.7]
+    method: GET
+    uri: https://kojipkgs.fedoraproject.org/compose/cloud/Fedora-Cloud-27-20180317.0/compose
+  response:
+    body: {string: !!python/unicode '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /compose/cloud/Fedora-Cloud-27-20180317.0/compose was
+        not found on this server.</p>
+
+        </body></html>
+
+        '}
+    headers:
+      appserver: [proxy01.phx2.fedoraproject.org]
+      apptime: [D=2605]
+      connection: [close]
+      content-length: ['246']
+      content-type: [text/html; charset=iso-8859-1]
+      date: ['Tue, 24 Jul 2018 20:48:51 GMT']
+      referrer-policy: [same-origin]
+      server: [Apache/2.4.33 (Fedora)]
+      strict-transport-security: [max-age=31536000; includeSubDomains; preload, max-age=31536000;
+          includeSubDomains; preload]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
+      User-Agent: [Python-urllib/2.7]
+    method: GET
+    uri: https://kojipkgs.fedoraproject.org/compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+  response:
+    body: {string: !!python/unicode '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+        was not found on this server.</p>
+
+        </body></html>
+
+        '}
+    headers:
+      appserver: [proxy01.phx2.fedoraproject.org]
+      apptime: [D=9749]
+      connection: [close]
+      content-length: ['249']
+      content-type: [text/html; charset=iso-8859-1]
+      date: ['Tue, 24 Jul 2018 20:51:06 GMT']
+      referrer-policy: [same-origin]
+      server: [Apache/2.4.33 (Fedora)]
+      strict-transport-security: [max-age=31536000; includeSubDomains; preload, max-age=31536000;
+          includeSubDomains; preload]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
+      User-Agent: [Python-urllib/2.7]
+    method: GET
+    uri: https://kojipkgs.fedoraproject.org/compose/cloud/Fedora-Cloud-27-20180317.0/compose
+  response:
+    body: {string: !!python/unicode '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /compose/cloud/Fedora-Cloud-27-20180317.0/compose was
+        not found on this server.</p>
+
+        </body></html>
+
+        '}
+    headers:
+      appserver: [proxy10.phx2.fedoraproject.org]
+      apptime: [D=2254]
+      connection: [close]
+      content-length: ['246']
+      content-type: [text/html; charset=iso-8859-1]
+      date: ['Tue, 24 Jul 2018 20:51:12 GMT']
+      referrer-policy: [same-origin]
+      server: [Apache/2.4.33 (Fedora)]
+      strict-transport-security: [max-age=31536000; includeSubDomains; preload, max-age=31536000;
+          includeSubDomains; preload]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
+      User-Agent: [Python-urllib/2.7]
+    method: GET
+    uri: https://kojipkgs.fedoraproject.org/compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+  response:
+    body: {string: !!python/unicode '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /compose/cloud/Fedora-Cloud-27-20180317.0/COMPOSE_ID
+        was not found on this server.</p>
+
+        </body></html>
+
+        '}
+    headers:
+      appserver: [proxy10.phx2.fedoraproject.org]
+      apptime: [D=3409]
+      connection: [close]
+      content-length: ['249']
+      content-type: [text/html; charset=iso-8859-1]
+      date: ['Tue, 24 Jul 2018 20:58:50 GMT']
+      referrer-policy: [same-origin]
+      server: [Apache/2.4.33 (Fedora)]
+      strict-transport-security: [max-age=31536000; includeSubDomains; preload, max-age=31536000;
+          includeSubDomains; preload]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [!!python/unicode 'kojipkgs.fedoraproject.org']
+      User-Agent: [Python-urllib/2.7]
+    method: GET
+    uri: https://kojipkgs.fedoraproject.org/compose/cloud/Fedora-Cloud-27-20180317.0/compose
+  response:
+    body: {string: !!python/unicode '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>404 Not Found</title>
+
+        </head><body>
+
+        <h1>Not Found</h1>
+
+        <p>The requested URL /compose/cloud/Fedora-Cloud-27-20180317.0/compose was
+        not found on this server.</p>
+
+        </body></html>
+
+        '}
+    headers:
+      appserver: [proxy01.phx2.fedoraproject.org]
+      apptime: [D=1774]
+      connection: [close]
+      content-length: ['246']
+      content-type: [text/html; charset=iso-8859-1]
+      date: ['Tue, 24 Jul 2018 20:58:57 GMT']
+      referrer-policy: [same-origin]
+      server: [Apache/2.4.33 (Fedora)]
+      strict-transport-security: [max-age=31536000; includeSubDomains; preload, max-age=31536000;
+          includeSubDomains; preload]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-xss-protection: [1; mode=block]
+    status: {code: 404, message: Not Found}
 version: 1
